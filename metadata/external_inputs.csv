@@ -1,0 +1,9 @@
+dataset,version_or_period,included,package_path,official_source,doi_or_reference,role
+IBTrACS Western Pacific,v04r01,no,,https://www.ncei.noaa.gov/products/international-best-track-archive,https://doi.org/10.25921/82ty-9e16,best-track positions and agency intensity records
+ERA5 monthly pressure levels,1940-2025,no,,https://cds.climate.copernicus.eu/datasets/reanalysis-era5-pressure-levels,https://doi.org/10.24381/cds.bd0915c6,circulation and steering diagnostics
+ERA5 monthly single levels,1940-2025,no,,https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels,https://doi.org/10.24381/cds.adbb2d47,environmental diagnostics
+ORAS5 monthly OHC300,1966-2025,no,,https://cds.climate.copernicus.eu/,https://doi.org/10.5194/os-15-779-2019,upper-ocean exposure diagnostic
+Oceanic Nino Index,frozen through 2025,no,,https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/ensostuff/ONI_v5.php,,climate-index adjustment
+Pacific Decadal Oscillation index,frozen through 2025,no,,https://www.ncei.noaa.gov/access/monitoring/pdo/,,climate-index adjustment
+GSHHG shoreline,v2.3.7,no,,https://www.soest.hawaii.edu/pwessel/gshhg/,https://doi.org/10.5281/zenodo.7007502,shoreline intersections and coast assignment
+Maps-For-Free relief,accessed 2026,no,,https://maps-for-free.com/,,Figure 1 cartographic shading only

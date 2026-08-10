@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the versioned archive and the associated article."
+title: "Analysis code for post-genesis tropical-cyclone track redistribution in the western North Pacific"
+version: "1.0.0"
+date-released: "2026-08-11"
+license: MIT
+type: software
+repository-code: "https://github.com/Arctic2002/wnp-tc-track-redistribution"
+authors:
+  - family-names: Huang
+    given-names: Daizhao
+    orcid: "https://orcid.org/0009-0009-6759-613X"
+    affiliation: "Guangxi Laboratory on the Study of Coral Reefs in the South China Sea, School of Marine Sciences, Guangxi University"
+  - family-names: Yue
+    given-names: Yuanfu
+    orcid: "https://orcid.org/0000-0002-5248-0056"
+    affiliation: "Guangxi Laboratory on the Study of Coral Reefs in the South China Sea, School of Marine Sciences, Guangxi University"
+keywords:
+  - tropical cyclone
+  - track redistribution
+  - landfall latitude
+  - western North Pacific
+  - IBTrACS
+  - ERA5
+  - ORAS5
+preferred-citation:
+  type: article
+  title: "Post-Genesis Track Redistribution and Poleward Landfall-Latitude Shift in the Western North Pacific: Cross-Agency Evidence from 1966-2025"
+  authors:
+    - family-names: Huang
+      given-names: Daizhao
+    - family-names: Yue
+      given-names: Yuanfu
+  journal: "Journal of Geophysical Research: Oceans"
+  year: 2026
+  notes: "Manuscript prepared for submission."

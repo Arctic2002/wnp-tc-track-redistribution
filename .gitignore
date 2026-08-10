@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+*.log
+.pytest_cache/
+.ipynb_checkpoints/
+.cdsapirc
+.env
+temp/
+
+# External and generated data
+data/
+figures/
+manifests/
+*.nc
+*.npz
+*.csv.gz
+
+# Manuscript-facing generated outputs
+JClimate_Mainline/analysis/**/*.csv
+JClimate_Mainline/analysis/**/*.json
+JClimate_Mainline/analysis/**/*.png
+JClimate_Mainline/analysis/**/*.pdf
+Verify/**/results/
+Verify/**/figures/
+Verify/**/qa/
+Verify/**/new_outputs/

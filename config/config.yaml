@@ -1,0 +1,51 @@
+# 全局配置——全项目唯一需要修改的地方。
+regions:
+  tc:
+    lon_min: 100
+    lon_max: 180
+    lat_min: 0
+    lat_max: 40
+  thermo:
+    lon_min: 100
+    lon_max: 180
+    lat_min: 0
+    lat_max: 40
+  dynamic:
+    lon_min: 80
+    lon_max: 180
+    lat_min: 0
+    lat_max: 65
+periods:                # 按变量分时段
+  env_start: 1940       # 环境场(ERA5)
+  record_start: 1945    # 逐气旋主表纳入下限：二战后系统性飞机侦察期开端
+  freq_start: 1966      # 频率/路径趋势分段边界：静止卫星常态化（可信频数区间）
+  intensity_start: 1982 # 强度类分段边界：均一卫星强度期
+  end: 2025             # 冻结年
+basin: "WP"
+wind_source: "USA"
+ts_threshold_kt: 34
+typhoon_threshold_kt: 64
+super_typhoon_kt: 130
+ri_threshold_kt_24h: 30
+sst_source: "era5"
+oni_threshold: 0.5
+typhoon_season: [6, 7, 8, 9, 10]
+era5_levels: [1000, 925, 850, 700, 600, 500, 400, 300, 250, 200, 150, 100]
+gshhg_path: "data/raw/GSHHG/GSHHS_shp/h/GSHHS_h_L1.shp"
+land_mask_res_deg: 0.02
+landfall_min_separation_h: 12
+compute:
+  n_workers: 12
+  pi_coarsen: 1
+  era5_years_per_request: 1
+statistics:
+  bootstrap_samples: 2000
+  bootstrap_block: 3
+  random_seed: 202406
+grids:
+  kde_grid_res: 0.5
+  density_bin: 2.5
+paths:
+  raw: "data/raw"
+  interim: "data/interim"
+  processed: "data/processed"

@@ -1,0 +1,38 @@
+# 环境名称；创建后使用 conda activate tc-wnp 激活。
+name: tc-wnp
+channels: [conda-forge]
+dependencies:
+  # 固定 Python 大版本，减少跨机器依赖解析差异。
+  - python=3.11
+  - numpy
+  - pandas
+  - xarray
+  - netcdf4
+  - h5netcdf
+  - dask
+  - zarr
+  - cftime
+  - pyarrow
+  - scipy
+  - statsmodels       # VIF / GLM / 回归
+  - matplotlib
+  - cartopy
+  - geopandas         # 读 GSHHG 海岸线
+  - shapely
+  - pyproj
+  - rasterio          # 陆地多边形栅格化
+  - affine
+  - pyyaml
+  - cdsapi
+  - scikit-learn
+  - scikit-fuzzy      # 模糊 c-均值路径分型
+  - cmcrameri         # 科学感知色标（Crameri）
+  - cmocean           # 海洋学感知色标
+  - joblib            # 多核并行（Parallel/delayed）
+  - requests          # 下载 ONI/PDO/GSHHG 指数与海岸线
+  - pytest            # 单元/冒烟测试
+  - pip
+  - pip:
+      # 这两个包通过 pip 安装；其余优先由 conda-forge 提供二进制依赖。
+      - tcpyPI          # 潜在强度
+      - pymannkendall   # 趋势检验（含 Hamed-Rao 修正）
