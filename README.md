@@ -1,10 +1,10 @@
 # Post-Genesis Track Redistribution in the Western North Pacific
 
-This repository contains the analysis and figure-generation code associated with:
+This repository provides the analysis and figure-generation code used in:
 
 > Huang, D., and Y. Yue. *Post-Genesis Track Redistribution and Poleward Landfall-Latitude Shift in the Western North Pacific: Cross-Agency Evidence from 1966–2025.* Manuscript prepared for submission to *Journal of Geophysical Research: Oceans*.
 
-The repository is the public development location for the software. The complete frozen reproduction package, including manuscript-facing derived data and the regional ORAS5 OHC300 subset, will be preserved separately in Zenodo under the reserved DOI [10.5281/zenodo.21879380](https://doi.org/10.5281/zenodo.21879380). The DOI will resolve after the Zenodo record is published.
+The associated derived data and regional monthly ORAS5 OHC300 subset are archived on Zenodo at [10.5281/zenodo.21879380](https://doi.org/10.5281/zenodo.21879380).
 
 ## Repository contents
 
@@ -16,7 +16,7 @@ The repository is the public development location for the software. The complete
 - `Verify/`: independently structured verification code and method specifications for pathway closure, signed projection, counterfactual steering, native-stage landfall, and OHC300 exposure.
 - `metadata/`: external-input registry and data-source notes.
 
-Large source datasets, derived tables, NetCDF files, compressed decomposition products, and manuscript figures are intentionally excluded from GitHub. They are either available from their original providers or included, where redistribution is permitted, in the frozen Zenodo record.
+Original third-party datasets remain available from their providers. Redistributable derived tables, figures, and the regional ORAS5 OHC300 subset are included in the Zenodo record.
 
 ## Environment
 
@@ -42,6 +42,6 @@ The analysis uses IBTrACS v04r01, ERA5, ORAS5, ONI, PDO, and GSHHG. Source locat
 
 ## Citation and license
 
-Please use `CITATION.cff` when citing the software. The frozen Zenodo record has the reserved DOI [10.5281/zenodo.21879380](https://doi.org/10.5281/zenodo.21879380), which will resolve after publication.
+Please use `CITATION.cff` when citing the software and associated data package. Its DOI is [10.5281/zenodo.21879380](https://doi.org/10.5281/zenodo.21879380).
 
 The project code is licensed under the MIT License. External datasets retain their providers' terms.
