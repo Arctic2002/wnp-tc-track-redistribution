@@ -21,20 +21,20 @@ def run():
     ensure_dirs()
     checks = []
 
-    annual = pd.read_csv(DATA / "jcli_redistribution_index_annual.csv")
+    annual = pd.read_csv(DATA / "wnp_tc_redistribution_index_annual.csv")
     checks.append(("annual_index_rows_480", len(annual) == 480, len(annual)))
     checks.append(("annual_index_no_nan", annual[["index_full", "index_oos"]].notna().all().all(), int(annual[["index_full", "index_oos"]].isna().sum().sum())))
     checks.append(("annual_index_unique_keys", not annual.duplicated(["year", "agency", "weighting"]).any(), int(annual.duplicated(["year", "agency", "weighting"]).sum())))
 
-    decomp = pd.read_csv(DATA / "jcli_genesis_propagation_summary.csv")
+    decomp = pd.read_csv(DATA / "wnp_tc_genesis_propagation_summary.csv")
     checks.append(("decomposition_closure", float(decomp.closure_max_abs.max()) < 1e-12, float(decomp.closure_max_abs.max())))
     checks.append(("decomposition_fraction_sum", np.allclose(decomp.genesis_projection_fraction + decomp.propagation_projection_fraction, 1), float(np.max(np.abs(decomp.genesis_projection_fraction + decomp.propagation_projection_fraction - 1)))))
 
-    land = pd.read_csv(DATA / "jcli_landfall_unique_events.csv")
+    land = pd.read_csv(DATA / "wnp_tc_landfall_unique_events.csv")
     dup = land.duplicated(["agency", "assignment_rule", "sid"]).sum()
     checks.append(("unique_landfall_one_row_per_storm", dup == 0, int(dup)))
 
-    circ = pd.read_csv(DATA / "jcli_circulation_regression_summary.csv")
+    circ = pd.read_csv(DATA / "wnp_tc_circulation_regression_summary.csv")
     checks.append(("circulation_six_field_tests", len(circ) == 6, len(circ)))
     checks.append(("circulation_p_range", circ.global_block_permutation_p.between(0, 1).all(), ""))
 

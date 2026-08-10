@@ -27,24 +27,24 @@ RESULTS = VERIFY / "results"
 FIGURES = VERIFY / "figures"
 QA = VERIFY / "qa"
 
-JCLIMATE = PROJECT / "JClimate_Mainline"
-RELEASE_TAG = (JCLIMATE / "CURRENT").read_text(encoding="utf-8").strip()
-RELEASE = JCLIMATE / "releases" / RELEASE_TAG
+WNP_TC = PROJECT / "wnp_tc_analysis"
+RELEASE_TAG = (WNP_TC / "CURRENT").read_text(encoding="utf-8").strip()
+RELEASE = WNP_TC / "releases" / RELEASE_TAG
 RAW = PROJECT / "data" / "raw" / "IBTrACS.WP.v04r01.csv"
 AUTHORITY = RELEASE / "results" / "exclusive_coast" / (
     "classified_exact_vector_events_admin0_corrected.csv"
 )
-ACTIVE_EXACT = JCLIMATE / "analysis" / "01_landfall_latitude" / (
+ACTIVE_EXACT = WNP_TC / "analysis" / "01_landfall_latitude" / (
     "landfall_events_exact.csv"
 )
-ACTIVE_SUMMARY = JCLIMATE / "analysis" / "01_landfall_latitude" / (
+ACTIVE_SUMMARY = WNP_TC / "analysis" / "01_landfall_latitude" / (
     "landfall_latitude_summary.csv"
 )
 
 if str(PROJECT) not in sys.path:
     sys.path.insert(0, str(PROJECT))
 
-from JClimate_Mainline.src.stats import (  # noqa: E402
+from wnp_tc_analysis.src.stats import (  # noqa: E402
     bh_fdr,
     block_bootstrap_many,
     block_permutation_many,

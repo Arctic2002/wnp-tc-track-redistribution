@@ -15,7 +15,7 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(SCRIPTS))
 
 from common import block_permutation_projection, projection_scores, temporal_blocks
-from src.wnpsh_metric_audit import correlation_permutation
+from wnp_tc_analysis.src.wnpsh_metric_audit import correlation_permutation
 
 
 def load_script(name, filename):

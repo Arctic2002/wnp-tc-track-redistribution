@@ -130,12 +130,12 @@ def run() -> None:
         )
 
     out = pd.DataFrame(rows)
-    out.to_csv(DATA / "jcli_robustness_matrix.csv", index=False)
+    out.to_csv(DATA / "wnp_tc_robustness_matrix.csv", index=False)
     out.loc[out["analysis"].str.startswith("drop_")].to_csv(
-        DATA / "jcli_leave_decade_out.csv", index=False
+        DATA / "wnp_tc_leave_decade_out.csv", index=False
     )
     out.loc[out["analysis"].isin([x[0] for x in endpoint_defs])].to_csv(
-        DATA / "jcli_endpoint_sensitivity.csv", index=False
+        DATA / "wnp_tc_endpoint_sensitivity.csv", index=False
     )
     print(out.groupby(["analysis", "weighting"])["block_permutation_p"].agg(["count", "min", "median", "max"]).to_string())
 

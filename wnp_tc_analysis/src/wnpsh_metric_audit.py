@@ -36,7 +36,7 @@ def run():
     out = WORK / "analysis" / "07_wnpsh_dynamic_metric"
     out.mkdir(parents=True, exist_ok=True)
     cfg = load_project_config()
-    annual = pd.read_csv(WORK / "data" / "jcli_eddy_wnpsh_annual.csv")
+    annual = pd.read_csv(WORK / "data" / "wnp_tc_eddy_wnpsh_annual.csv")
     variables = ["eddy_wnpsh_mean_m", "wpsh_area", "wpsh_intensity", "west_ridge_point", "ridge_line"]
     trend_rows = []
     for start in [1966, 1982]:
@@ -50,7 +50,7 @@ def run():
     trends = add_family_fdr(trend_rows)
     trends.to_csv(out / "wnpsh_metric_trends.csv", index=False)
 
-    index = pd.read_csv(WORK / "data" / "jcli_redistribution_index_annual.csv")
+    index = pd.read_csv(WORK / "data" / "wnp_tc_redistribution_index_annual.csv")
     index = index.loc[index["weighting"].eq("track_point"), ["agency", "year", "index_oos"]]
     lmi = pd.read_csv(WORK / "analysis" / "03_common_storms" / "core_crossagency_annual.csv")
     landing = pd.read_csv(WORK / "analysis" / "01_landfall_latitude" / "landfall_latitude_annual.csv")

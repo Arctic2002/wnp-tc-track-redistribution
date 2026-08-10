@@ -1,4 +1,4 @@
-"""Shared final-scale typography for JClimate release figures."""
+"""Shared final-scale typography for WNP TC analysis figures."""
 
 from __future__ import annotations
 

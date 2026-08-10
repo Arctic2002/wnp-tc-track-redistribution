@@ -108,7 +108,7 @@ def initial_registry() -> pd.DataFrame:
                 source_script="scripts/upstream_revision/29_multiagency_sensitivity.py", source_output=str(agreement_path.relative_to(WORK)),
                 status="verified_against_existing_output", notes="Agency records share observational basis and are not independent experiments",
             ))
-    unique_path = WORK / "data" / "jcli_landfall_unique_summary.csv"
+    unique_path = WORK / "data" / "wnp_tc_landfall_unique_summary.csv"
     for r in pd.read_csv(unique_path).itertuples():
         rows.append(dict(
             manuscript_section="Results 3.6", claim_id=f"unique_landfall_{r.agency}_{r.assignment_rule}", metric="north_share_change_percentage_points",
@@ -156,13 +156,13 @@ def run() -> None:
 
 审计日期：2026-07-21  
 执行规范：`sources/CODEX_论文系统修订任务书.md`  
-工作副本：`JClimate_Mainline`；来源版本`Revision/v2`和项目根目录原始数据均未覆盖。
+工作副本：`wnp_tc_analysis`；来源版本`Revision/v2`和项目根目录原始数据均未覆盖。
 
 ## 1. 当前文稿与输入边界
 
 - 当前中文、英文及补充材料基线位于`MD/`，对应Word稿位于`DOCX/`。
 - 任务书指定的导师审阅稿`4b0468af-157c-4f90-8eec-69a816a3561a.docx`未在项目或`D:/Download`找到。当前审计使用已完成历次导师意见整合的v1稿作为基线；未知批注不得推测写回。
-- 目标期刊尚未最终确定。现有稿按JCLI/AMS候选格式组织，但仍生成`journal_style_pending.md`。
+- 目标期刊尚未最终确定。现有稿按早期候选格式组织，但仍生成`journal_style_pending.md`。
 
 ## 2. 数据清点
 
@@ -190,7 +190,7 @@ def run() -> None:
 - 文稿中的三机构频数斜率、路径场TVD/p值、路径空间相关和唯一风暴登陆份额变化均能在现有CSV中定位。
 - 既有登陆事件由栅格加密算法生成，尚不能满足任务书的高分辨率海岸线几何交点要求；直接登陆纬度当前未验证。
 - 当前主稿已把登陆结论限制为海岸构成/方向性变化，没有把唯一风暴结果写成显著的普遍北移；标题仍需由P0直接纬度分析决定。
-- 固定588 dagpm不应解释为动力增强。当前JCLI稿主要使用涡动位势高度和引导气流背景，但旧稿及旧图仍需全文检索清理。
+- 固定588 dagpm不应解释为动力增强。当前稿件主要使用涡动位势高度和引导气流背景，但旧稿及旧图仍需全文检索清理。
 
 ## 6. 审计产物
 

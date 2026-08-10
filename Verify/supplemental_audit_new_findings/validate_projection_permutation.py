@@ -9,7 +9,7 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[2]
-SCRIPTS = ROOT / "JClimate_Mainline" / "scripts"
+SCRIPTS = ROOT / "wnp_tc_analysis" / "scripts"
 sys.path.insert(0, str(SCRIPTS))
 
 from common import (  # noqa: E402

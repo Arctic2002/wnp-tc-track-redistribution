@@ -62,11 +62,11 @@ def fit_one(data, predictors, timescale, model_name):
 
 def run() -> None:
     ensure_dirs()
-    d = pd.read_csv(DATA / "jcli_eddy_wnpsh_annual.csv")
+    d = pd.read_csv(DATA / "wnp_tc_eddy_wnpsh_annual.csv")
     oni = pd.read_csv(PROJECT / "data" / "raw" / "indices" / "oni.csv").rename(columns={"season": "year"})
     pdo = pd.read_csv(PROJECT / "data" / "raw" / "indices" / "pdo.csv").rename(columns={"season": "year"})
     d = d.merge(oni, on="year", how="left").merge(pdo, on="year", how="left")
-    d.to_csv(DATA / "jcli_regression_input_annual.csv", index=False)
+    d.to_csv(DATA / "wnp_tc_regression_input_annual.csv", index=False)
     coef_rows, summary_rows, vif_rows = [], [], []
     for timescale in ("raw", "detrended"):
         for name, predictors in MODELS.items():
@@ -77,9 +77,9 @@ def run() -> None:
     coefs["q_bh_within_timescale"] = np.nan
     for _, idx in coefs.loc[coefs.term != "const"].groupby("timescale").groups.items():
         coefs.loc[idx, "q_bh_within_timescale"] = bh_fdr(coefs.loc[idx, "p_hac"])
-    coefs.to_csv(DATA / "jcli_regression_models.csv", index=False)
-    pd.DataFrame(summary_rows).to_csv(DATA / "jcli_regression_diagnostics.csv", index=False)
-    pd.DataFrame(vif_rows).to_csv(DATA / "jcli_regression_vif.csv", index=False)
+    coefs.to_csv(DATA / "wnp_tc_regression_models.csv", index=False)
+    pd.DataFrame(summary_rows).to_csv(DATA / "wnp_tc_regression_diagnostics.csv", index=False)
+    pd.DataFrame(vif_rows).to_csv(DATA / "wnp_tc_regression_vif.csv", index=False)
     print(coefs.loc[coefs.term != "const"].to_string(index=False))
     print(pd.DataFrame(summary_rows).to_string(index=False))
 

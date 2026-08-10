@@ -16,10 +16,10 @@ manifests/
 *.csv.gz
 
 # Manuscript-facing generated outputs
-JClimate_Mainline/analysis/**/*.csv
-JClimate_Mainline/analysis/**/*.json
-JClimate_Mainline/analysis/**/*.png
-JClimate_Mainline/analysis/**/*.pdf
+wnp_tc_analysis/analysis/**/*.csv
+wnp_tc_analysis/analysis/**/*.json
+wnp_tc_analysis/analysis/**/*.png
+wnp_tc_analysis/analysis/**/*.pdf
 Verify/**/results/
 Verify/**/figures/
 Verify/**/qa/

@@ -24,7 +24,7 @@ EXPECTED_LOCAL_CHANGES = {
     "releases/v1_0/reports/version_manifest_v1_0.csv",
     "scripts/00_verify_import.py",
     "scripts/common.py",
-    "scripts/39_jcli_formal_figures.py",
+    "scripts/39_wnp_tc_formal_figures.py",
     "scripts/41_build_docx.py",
     "scripts/42_build_cn_reference_layout.py",
     "scripts/44_audit_package.py",
@@ -120,7 +120,7 @@ def main() -> None:
     copied = sum(row["classification"] == "copied-unchanged" for row in rows)
     local = sum(row["classification"] in {"subproject-local", "subproject-only"} for row in rows)
     report = [
-        "# JClimate Mainline 子项目核验",
+        "# WNP TC analysis 子项目核验",
         "",
         "## 结论",
         "",

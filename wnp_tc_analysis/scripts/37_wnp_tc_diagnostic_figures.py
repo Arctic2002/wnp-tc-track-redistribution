@@ -12,10 +12,10 @@ def run():
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    annual = pd.read_csv(DATA / "jcli_redistribution_index_annual.csv")
-    summary = pd.read_csv(DATA / "jcli_genesis_propagation_summary.csv")
-    land = pd.read_csv(DATA / "jcli_landfall_unique_summary.csv")
-    robust = pd.read_csv(DATA / "jcli_robustness_matrix.csv")
+    annual = pd.read_csv(DATA / "wnp_tc_redistribution_index_annual.csv")
+    summary = pd.read_csv(DATA / "wnp_tc_genesis_propagation_summary.csv")
+    land = pd.read_csv(DATA / "wnp_tc_landfall_unique_summary.csv")
+    robust = pd.read_csv(DATA / "wnp_tc_robustness_matrix.csv")
 
     fig, axes = plt.subplots(2, 2, figsize=(11.5, 8), constrained_layout=True)
     ax = axes[0, 0]
@@ -51,7 +51,7 @@ def run():
 
     for label, ax in zip("abcd", axes.flat):
         ax.text(0.01, 0.98, label, transform=ax.transAxes, va="top", fontweight="bold")
-    fig.savefig(FIGURES / "jcli_diagnostic_evidence_overview.png", dpi=220)
+    fig.savefig(FIGURES / "wnp_tc_diagnostic_evidence_overview.png", dpi=220)
     plt.close(fig)
 
 

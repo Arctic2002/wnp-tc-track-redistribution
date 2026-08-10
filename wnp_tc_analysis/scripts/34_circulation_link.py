@@ -138,7 +138,7 @@ def region_mean(values, lat, lon, lon0, lon1, lat0, lat1):
 
 def run() -> None:
     ensure_dirs()
-    idx = pd.read_csv(DATA / "jcli_redistribution_index_annual.csv")
+    idx = pd.read_csv(DATA / "wnp_tc_redistribution_index_annual.csv")
     idx = idx.loc[(idx.agency == "PRIMARY") & (idx.weighting == "track_point")].sort_values("year")
     years = idx["year"].to_numpy(int)
     x = standardize(idx["index_oos"].to_numpy(float))
@@ -207,14 +207,14 @@ def run() -> None:
     })
     fixed = pd.read_csv(PROJECT / "data" / "processed" / "p2_wnpsh.csv").rename(columns={"season": "year"})
     scalar = scalar.merge(fixed, on="year", how="left")
-    scalar.to_csv(DATA / "jcli_eddy_wnpsh_annual.csv", index=False)
-    pd.DataFrame(summary_rows).to_csv(DATA / "jcli_circulation_regression_summary.csv", index=False)
-    np.savez_compressed(DATA / "jcli_circulation_fields.npz", **payload)
+    scalar.to_csv(DATA / "wnp_tc_eddy_wnpsh_annual.csv", index=False)
+    pd.DataFrame(summary_rows).to_csv(DATA / "wnp_tc_circulation_regression_summary.csv", index=False)
+    np.savez_compressed(DATA / "wnp_tc_circulation_fields.npz", **payload)
 
     trend_rows = []
     for col in ["eddy_wnpsh_mean_m", "corridor_u_steer_ms", "corridor_v_steer_ms", "west_ridge_point", "ridge_line"]:
         trend_rows.append({"variable": col, **sen_mk(years, scalar[col].to_numpy(float))})
-    pd.DataFrame(trend_rows).to_csv(DATA / "jcli_circulation_scalar_trends.csv", index=False)
+    pd.DataFrame(trend_rows).to_csv(DATA / "wnp_tc_circulation_scalar_trends.csv", index=False)
 
     import matplotlib
     matplotlib.use("Agg")
@@ -233,7 +233,7 @@ def run() -> None:
     fig.colorbar(m2, ax=axes[1, 1], label="Detrended eddy Z500 regression")
     for label, ax in zip("abcd", axes.flat):
         ax.text(0.01, 0.98, label, transform=ax.transAxes, va="top", fontweight="bold")
-    fig.savefig(FIGURES / "jcli_diagnostic_circulation_link.png", dpi=220)
+    fig.savefig(FIGURES / "wnp_tc_diagnostic_circulation_link.png", dpi=220)
     plt.close(fig)
     print(pd.DataFrame(summary_rows).to_string(index=False))
     print(pd.DataFrame(trend_rows).to_string(index=False))

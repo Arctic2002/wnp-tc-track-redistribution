@@ -16,7 +16,7 @@ from .figure_typography import scale_figure_typography
 def make_figure(output: Path | None = None) -> None:
     """Render S9 solely from existing annual values and saved trend estimates."""
     output = output or SUPPLEMENTARY_FIGURES / "FigS09_wnpsh_fixed_contour_metrics"
-    annual = pd.read_csv(WORK / "data" / "jcli_eddy_wnpsh_annual.csv")
+    annual = pd.read_csv(WORK / "data" / "wnp_tc_eddy_wnpsh_annual.csv")
     trends = pd.read_csv(WORK / "analysis" / "07_wnpsh_dynamic_metric" / "wnpsh_metric_trends.csv")
     panels = [
         ("wpsh_area", "WNPSH Area\n(10$^6$ km²)"),

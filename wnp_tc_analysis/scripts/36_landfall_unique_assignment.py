@@ -105,11 +105,11 @@ def run() -> None:
             summaries.append(summarize(d, agency, rule))
 
     out = pd.concat(outputs, ignore_index=True)
-    out.to_csv(DATA / "jcli_landfall_unique_events.csv", index=False)
+    out.to_csv(DATA / "wnp_tc_landfall_unique_events.csv", index=False)
     summary = pd.DataFrame(summaries)
     missing_wind_storms = primary.groupby("sid")["wind"].apply(lambda x: x.notna().sum() == 0).sum()
     summary["primary_storms_without_any_landfall_wind"] = int(missing_wind_storms)
-    summary.to_csv(DATA / "jcli_landfall_unique_summary.csv", index=False)
+    summary.to_csv(DATA / "wnp_tc_landfall_unique_summary.csv", index=False)
     print(summary.to_string(index=False))
 
 

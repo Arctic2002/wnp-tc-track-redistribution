@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib.ticker import FuncFormatter
-from JClimate_Mainline.src.figure_typography import scale_figure_typography
+from wnp_tc_analysis.src.figure_typography import scale_figure_typography
 
 WORK = Path(__file__).resolve().parents[1]
 PROJECT = WORK.parent
@@ -69,9 +69,9 @@ def save(fig, name, *, scale=1.10):
 
 
 def fig3():
-    fields = np.load(DATA / "jcli_genesis_propagation_fields.npz")
-    annual = pd.read_csv(DATA / "jcli_redistribution_index_annual.csv")
-    robust = pd.read_csv(DATA / "jcli_robustness_matrix.csv")
+    fields = np.load(DATA / "wnp_tc_genesis_propagation_fields.npz")
+    annual = pd.read_csv(DATA / "wnp_tc_redistribution_index_annual.csv")
+    robust = pd.read_csv(DATA / "wnp_tc_robustness_matrix.csv")
     lon_edges = fields["PRIMARY_lon_edges"]; lat_edges = fields["PRIMARY_lat_edges"]
     change = fields["PRIMARY_total_field"].reshape(len(lat_edges)-1, len(lon_edges)-1) * 100
     vmax = np.nanmax(np.abs(change))
@@ -126,8 +126,8 @@ def fig3():
 
 
 def fig4():
-    fields = np.load(DATA / "jcli_genesis_propagation_fields.npz")
-    summary = pd.read_csv(DATA / "jcli_genesis_propagation_summary.csv")
+    fields = np.load(DATA / "wnp_tc_genesis_propagation_fields.npz")
+    summary = pd.read_csv(DATA / "wnp_tc_genesis_propagation_summary.csv")
     lon_edges = fields["PRIMARY_lon_edges"]; lat_edges = fields["PRIMARY_lat_edges"]
     maps = [fields[f"PRIMARY_{k}_field"].reshape(len(lat_edges)-1, len(lon_edges)-1)*100 for k in ("total", "genesis", "propagation")]
     vmax = max(np.max(np.abs(x)) for x in maps)
@@ -169,8 +169,8 @@ def fig4():
 
 
 def fig5():
-    fields = np.load(DATA / "jcli_circulation_fields.npz")
-    coefs = pd.read_csv(DATA / "jcli_regression_models.csv")
+    fields = np.load(DATA / "wnp_tc_circulation_fields.npz")
+    coefs = pd.read_csv(DATA / "wnp_tc_regression_models.csv")
     lon = fields["longitude"]; lat = fields["latitude"]
     vmax = max(np.max(np.abs(fields["raw_z_eddy_beta"])), np.max(np.abs(fields["detrended_z_eddy_beta"])))
     fig = plt.figure(figsize=(9.15, 7.1))
@@ -236,8 +236,8 @@ def fig5():
 
 
 def fig6():
-    events = pd.read_csv(DATA / "jcli_landfall_unique_events.csv")
-    summary = pd.read_csv(DATA / "jcli_landfall_unique_summary.csv")
+    events = pd.read_csv(DATA / "wnp_tc_landfall_unique_events.csv")
+    summary = pd.read_csv(DATA / "wnp_tc_landfall_unique_summary.csv")
     fig = plt.figure(figsize=(12, 7.8), constrained_layout=True)
     gs = fig.add_gridspec(2, 2)
     axes=[fig.add_subplot(gs[0,:]), fig.add_subplot(gs[1,0]), fig.add_subplot(gs[1,1])]
@@ -276,7 +276,7 @@ def copy_existing():
     for name in supplemental:
         src=PROJECT/"figures"/name
         if src.exists(): shutil.copy2(src,SUPP/name)
-    for name in ["jcli_diagnostic_evidence_overview.png","jcli_diagnostic_circulation_link.png"]:
+    for name in ["wnp_tc_diagnostic_evidence_overview.png","wnp_tc_diagnostic_circulation_link.png"]:
         src=WORK/"figures"/name
         if src.exists(): shutil.copy2(src,SUPP/name)
 

@@ -1,7 +1,7 @@
 from shapely.geometry import LineString, box
 from shapely.prepared import prep
 
-from src.landfall_latitude import geometry_points, sea_to_land_fractions
+from wnp_tc_analysis.src.landfall_latitude import geometry_points, sea_to_land_fractions
 
 
 def test_single_sea_to_land_crossing():

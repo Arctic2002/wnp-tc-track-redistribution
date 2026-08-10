@@ -8,7 +8,7 @@ TV 和 p 值，且 106 行中仅 18 行有 spatial correlation。读者无法从
 即"方向一致"；S_c 同时给出相对于主配置的幅度。另报告空间相关 r 以区分"方向一致"与
 "形态相似"——两者不是一回事，前者只要求投影为正，后者要求整体形态接近。
 
-数据来源：`Verify/supplemental_audit_new_findings/new_outputs/jcli_redistribution_pattern.npz`
+数据来源：`Verify/supplemental_audit_new_findings/new_outputs/wnp_tc_redistribution_pattern.npz`
 存有四套记录 × 两种权重在 2.5° 网格上的逐年相对路径场（60 年 × 512 格）。由这些年度场
 可直接重算任意时期端点组合的 d_c，无需重跑主管线。block length 只影响置换 p 值，不影响
 d_c，因此同一 catalog／weighting／时期的不同 block 行共享同一 S_c。
@@ -33,8 +33,8 @@ import numpy as np
 ROOT = Path(__file__).resolve().parents[3]
 SRC = ROOT / "Verify/supplemental_audit_new_findings/new_outputs"
 OUT = Path(__file__).resolve().parents[1] / "results"
-MATRIX = SRC / "jcli_robustness_matrix.csv"
-PATTERN = SRC / "jcli_redistribution_pattern.npz"
+MATRIX = SRC / "wnp_tc_robustness_matrix.csv"
+PATTERN = SRC / "wnp_tc_redistribution_pattern.npz"
 
 TOL = 1e-6
 

@@ -83,12 +83,12 @@ def run() -> None:
                     pattern_payload[f"{b}_{weighting}_pattern"],
                 )[0, 1]),
             })
-    annual.to_csv(DATA / "jcli_redistribution_index_annual.csv", index=False)
-    trends.to_csv(DATA / "jcli_redistribution_index_summary.csv", index=False)
-    pd.DataFrame(agreement_rows).to_csv(DATA / "jcli_redistribution_index_agreement.csv", index=False)
-    np.savez_compressed(DATA / "jcli_redistribution_pattern.npz", **pattern_payload)
+    annual.to_csv(DATA / "wnp_tc_redistribution_index_annual.csv", index=False)
+    trends.to_csv(DATA / "wnp_tc_redistribution_index_summary.csv", index=False)
+    pd.DataFrame(agreement_rows).to_csv(DATA / "wnp_tc_redistribution_index_agreement.csv", index=False)
+    np.savez_compressed(DATA / "wnp_tc_redistribution_pattern.npz", **pattern_payload)
     write_json(
-        DATA / "jcli_redistribution_index_metadata.json",
+        DATA / "wnp_tc_redistribution_index_metadata.json",
         {
             "period": [START, END],
             "early": list(EARLY),

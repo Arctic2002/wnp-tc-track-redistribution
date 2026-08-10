@@ -11,8 +11,8 @@ The repository is the public development location for the software. The complete
 - `config/`: analysis domains, periods, thresholds, random seed, and environment specification.
 - `core/`: shared download, preprocessing, track-table, and landfall-processing code.
 - `paper2_dynamic/`: track, steering-flow, circulation, and translation-speed analyses.
-- `JClimate_Mainline/src/` and `JClimate_Mainline/scripts/`: cross-agency, sensitivity, Shapley, circulation, landfall, and figure code.
-- `JClimate_Mainline/tests/` and `core/tests/`: tests for the shared and manuscript-specific analysis code.
+- `wnp_tc_analysis/src/` and `wnp_tc_analysis/scripts/`: cross-agency, sensitivity, Shapley, circulation, landfall, and figure code.
+- `wnp_tc_analysis/tests/` and `core/tests/`: tests for the shared and manuscript-specific analysis code.
 - `Verify/`: independently structured verification code and method specifications for pathway closure, signed projection, counterfactual steering, native-stage landfall, and OHC300 exposure.
 - `metadata/`: external-input registry and data-source notes.
 
@@ -30,7 +30,7 @@ conda activate tc-wnp
 The core validation suite can then be run from the repository root:
 
 ```bash
-python -m pytest core/tests JClimate_Mainline/tests \
+python -m pytest core/tests wnp_tc_analysis/tests \
   Verify/ohc_path_exposure/tests Verify/pathway_closure/tests
 ```
 

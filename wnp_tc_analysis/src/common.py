@@ -16,13 +16,13 @@ PROJECT = WORK.parent
 CONFIG_PATH = WORK / "config" / "analysis.yml"
 CURRENT_PATH = WORK / "CURRENT"
 RELEASE_TAG = os.environ.get(
-    "TC_JCLIMATE_RELEASE_TAG",
+    "WNP_TC_RELEASE_TAG",
     CURRENT_PATH.read_text(encoding="utf-8").strip(),
 ).strip()
 if not re.fullmatch(r"v\d+_\d+", RELEASE_TAG):
     raise RuntimeError(
-        f"Invalid JClimate release tag {RELEASE_TAG!r}; "
-        f"check {CURRENT_PATH} or TC_JCLIMATE_RELEASE_TAG."
+        f"Invalid WNP TC analysis release tag {RELEASE_TAG!r}; "
+        f"check {CURRENT_PATH} or WNP_TC_RELEASE_TAG."
     )
 RELEASE = WORK / "releases" / RELEASE_TAG
 MANUSCRIPT_MD = RELEASE / "manuscript" / "MD"

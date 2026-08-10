@@ -153,9 +153,9 @@ def run() -> None:
                 lo, hi = np.quantile(group[variable].dropna(), [0.025, 0.975])
                 s.loc[s["catalog"] == catalog, f"{variable}_boot_lo"] = lo
                 s.loc[s["catalog"] == catalog, f"{variable}_boot_hi"] = hi
-    s.to_csv(DATA / "jcli_genesis_propagation_summary.csv", index=False)
-    b.to_csv(DATA / "jcli_genesis_propagation_bootstrap.csv", index=False)
-    np.savez_compressed(DATA / "jcli_genesis_propagation_fields.npz", **payload)
+    s.to_csv(DATA / "wnp_tc_genesis_propagation_summary.csv", index=False)
+    b.to_csv(DATA / "wnp_tc_genesis_propagation_bootstrap.csv", index=False)
+    np.savez_compressed(DATA / "wnp_tc_genesis_propagation_fields.npz", **payload)
     print(s.to_string(index=False))
 
 
