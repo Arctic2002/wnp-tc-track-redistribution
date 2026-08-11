@@ -20,7 +20,7 @@ periods:                # 按变量分时段
   record_start: 1945    # 逐气旋主表纳入下限：二战后系统性飞机侦察期开端
   freq_start: 1966      # 频率/路径趋势分段边界：静止卫星常态化（可信频数区间）
   intensity_start: 1982 # 强度类分段边界：均一卫星强度期
-  end: 2025             # 冻结年
+  end: 2025             # 分析结束年
 basin: "WP"
 wind_source: "USA"
 ts_threshold_kt: 34

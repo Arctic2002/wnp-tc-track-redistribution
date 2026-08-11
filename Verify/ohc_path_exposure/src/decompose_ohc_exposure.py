@@ -18,8 +18,8 @@ from common import (
     project_path,
     require_execute,
     resolve_config_path,
-    validate_code_review_gate,
-    validate_seam_review_gate,
+    validate_method_record,
+    validate_product_seam_decision,
 )
 
 
@@ -387,8 +387,8 @@ def main() -> None:
     require_execute(args.execute)
     config_path = resolve_config_path(args.config)
     config = load_config(config_path)
-    validate_code_review_gate(config_path, config)
-    validate_seam_review_gate(config_path, config)
+    validate_method_record(config_path, config)
+    validate_product_seam_decision(config_path, config)
     if int(config["matching"]["month_lag"]) != 0:
         raise ValueError("this decomposition specification is fixed to contemporaneous month_lag=0")
 

@@ -1,16 +1,16 @@
 """为稳健性矩阵的每个配置计算有符号投影 S_c。
 
-动机（外部审阅 P0-06）：正文称"106 种配置方向一致"，但 Table S1 只报告无符号的
-TV 和 p 值，且 106 行中仅 18 行有 spatial correlation。读者无法从表本身验证该结论。
+该分析为每种配置补充有符号投影，使“106种配置方向一致”的结论能够直接由数值表核对。
+Table S1的TV和p值无符号，且106行中仅18行有spatial correlation，因此需要单独记录投影方向。
 
 定义：S_c = d_c·d_p / (d_p·d_p)，d_p 为主配置（PRIMARY、track_point、2.5°、
 1966–1995 vs 1996–2025）的两期差异场。S_c>0 表示该配置的差异场在主对比方向上为正投影，
 即"方向一致"；S_c 同时给出相对于主配置的幅度。另报告空间相关 r 以区分"方向一致"与
 "形态相似"——两者不是一回事，前者只要求投影为正，后者要求整体形态接近。
 
-数据来源：`Verify/supplemental_audit_new_findings/new_outputs/wnp_tc_redistribution_pattern.npz`
+数据来源：`Verify/supplemental_validation/new_outputs/wnp_tc_redistribution_pattern.npz`
 存有四套记录 × 两种权重在 2.5° 网格上的逐年相对路径场（60 年 × 512 格）。由这些年度场
-可直接重算任意时期端点组合的 d_c，无需重跑主管线。block length 只影响置换 p 值，不影响
+可直接重算任意时期端点组合的 d_c，无需重算基础路径场。block length 只影响置换 p 值，不影响
 d_c，因此同一 catalog／weighting／时期的不同 block 行共享同一 S_c。
 
 网格不同的配置（1°、5°）与强度阈值配置（typhoon-only）的年度场不在该存档内。它们的
@@ -31,7 +31,7 @@ from pathlib import Path
 import numpy as np
 
 ROOT = Path(__file__).resolve().parents[3]
-SRC = ROOT / "Verify/supplemental_audit_new_findings/new_outputs"
+SRC = ROOT / "Verify/supplemental_validation/new_outputs"
 OUT = Path(__file__).resolve().parents[1] / "results"
 MATRIX = SRC / "wnp_tc_robustness_matrix.csv"
 PATTERN = SRC / "wnp_tc_redistribution_pattern.npz"

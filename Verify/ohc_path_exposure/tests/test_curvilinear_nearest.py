@@ -1,4 +1,4 @@
-"""Synthetic spherical nearest-ocean-cell tests; not yet executed."""
+"""Synthetic spherical nearest-ocean-cell tests."""
 
 from __future__ import annotations
 

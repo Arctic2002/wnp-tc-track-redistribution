@@ -1,4 +1,4 @@
-"""Synthetic seam-diagnostic tests; not yet executed."""
+"""Synthetic seam-diagnostic tests."""
 
 from __future__ import annotations
 

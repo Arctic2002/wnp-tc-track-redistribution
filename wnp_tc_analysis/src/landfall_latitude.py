@@ -537,10 +537,10 @@ def run(*, reuse_existing: bool = False):
         f"- {AGENCY_LABEL[r.agency]} / {r.definition}: Δ={r.period_difference:.3f}°，95% CI [{r.period_ci_low:.3f}, {r.period_ci_high:.3f}]，p={r.period_block_p:.4f}，q={r.period_q_bh:.4f}。"
         for r in key.itertuples())
     (ANALYSIS / "title_evidence_boundary.md").write_text(
-        f"# 标题证据边界\n\n## 直接登陆纬度P0结果\n\n{results_lines}\n\n## 规则A判定\n\n{criteria_lines}\n\n留一海岸检验只用于判断北移方向是否由单一岸段驱动，相关置换p值作诊断，不替代预设完整样本的族内FDR检验。卫星时期趋势门禁仅检查方向，趋势显著性及置信区间须在正文单独披露。\n\n## 推荐标题\n\n**{title}**\n\n规则A未通过时不得在标题中使用无条件“登陆纬度北移”。\n",
+        f"# 标题证据边界\n\n## 直接登陆纬度P0结果\n\n{results_lines}\n\n## 规则A判定\n\n{criteria_lines}\n\n留一海岸检验只用于判断北移方向是否由单一岸段驱动，相关置换p值作诊断，不替代预设完整样本的族内FDR检验。卫星时期趋势判据只检查方向，趋势显著性及置信区间单独报告。\n\n## 推荐标题\n\n**{title}**\n\n规则A未通过时不得在标题中使用无条件“登陆纬度北移”。\n",
         encoding="utf-8")
     (ANALYSIS / "method.md").write_text(
-        "# 直接登陆纬度方法\n\n使用IBTrACS v04r01中USA、JMA（TOKYO字段）和CMA原始机构位置。仅连接同一SID内时间间隔大于0且不超过12 h的相邻点。为控制内存，先用既有0.02°GSHHG海陆掩膜识别海到陆候选线段；该步骤只作保守筛选，不提供最终坐标。随后将每条候选轨迹线段与GSHHG高分辨率L1陆地多边形边界精确求交，并按线段顺序检查交点前后的海陆状态；最终登陆时间、纬度、经度和风速全部按精确交点在线段上的比例插值。12 h内的重复交点合并；再入海后超过12 h的登陆保留。未能得到矢量海到陆交点的候选单列于`unresolved_candidates.csv`，不以近似点填补。正式登陆事件要求海岸交点前一个机构原生时次已达到热带风暴或以上；交点前后任一端及两端的阶段标记另存于审计表，不进入正文主统计。离散海岸归属统一读取当前互斥GSHHG岸段权威表。统计采用首次合格登陆、全部合格登陆事件和唯一风暴—海岸三种定义，以年度均值、中位数和四分位数为统计单位。时期差使用3年分块置换，置信区间使用3年移动块自助；趋势使用Theil—Sen和Hamed—Rao修正MK。BH-FDR按登陆定义、统计量和分析端点分别成族，每族包含USA、JMA和CMA三个机构检验。\n",
+        "# 直接登陆纬度方法\n\n使用IBTrACS v04r01中USA、JMA（TOKYO字段）和CMA原始机构位置。仅连接同一SID内时间间隔大于0且不超过12 h的相邻点。为控制内存，先用既有0.02°GSHHG海陆掩膜识别海到陆候选线段；该步骤只作保守筛选，不提供最终坐标。随后将每条候选轨迹线段与GSHHG高分辨率L1陆地多边形边界精确求交，并按线段顺序检查交点前后的海陆状态；最终登陆时间、纬度、经度和风速全部按精确交点在线段上的比例插值。12 h内的重复交点合并；再入海后超过12 h的登陆保留。未能得到矢量海到陆交点的候选单列于`unresolved_candidates.csv`，不以近似点填补。正式登陆事件要求海岸交点前一个机构原生时次已达到热带风暴或以上；交点前后任一端及两端的阶段标记另存于记录表，不进入主统计。离散海岸归属统一读取互斥GSHHG岸段权威表。统计采用首次合格登陆、全部合格登陆事件和唯一风暴—海岸三种定义，以年度均值、中位数和四分位数为统计单位。时期差使用3年分块置换，置信区间使用3年移动块自助；趋势使用Theil—Sen和Hamed—Rao修正MK。BH-FDR按登陆定义、统计量和分析端点分别成族，每族包含USA、JMA和CMA三个机构检验。\n",
         encoding="utf-8")
     make_figure(annual, summary, ANALYSIS / "landfall_latitude_diagnostic")
     elapsed = time.time() - started

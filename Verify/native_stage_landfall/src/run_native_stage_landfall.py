@@ -2,7 +2,7 @@
 
 This isolated verification reads the current exclusive-coast authority and
 original IBTrACS agency fields, but writes only below
-``Verify/landfall_stage_revision``.
+``Verify/native_stage_landfall``.
 """
 
 from __future__ import annotations
@@ -22,7 +22,7 @@ import pandas as pd
 
 
 PROJECT = Path(__file__).resolve().parents[3]
-VERIFY = PROJECT / "Verify" / "landfall_stage_revision"
+VERIFY = PROJECT / "Verify" / "native_stage_landfall"
 RESULTS = VERIFY / "results"
 FIGURES = VERIFY / "figures"
 QA = VERIFY / "qa"
@@ -530,10 +530,9 @@ def title_gates(
     )
     return {
         "registered_rule_A_recomputed": registered,
-        "review_recommended_first_landfall_gate": conventional,
+        "strict_first_landfall_criterion": conventional,
         "note": (
-            "The second gate is a stricter review diagnostic and does not "
-            "silently replace the registered project rule."
+            "The second criterion is a stricter first-landfall-only test and is reported alongside the registered project rule."
         ),
     }
 
@@ -753,14 +752,14 @@ def write_impact_report(
     )
 
     registered = gates["registered_rule_A_recomputed"]
-    conventional = gates["review_recommended_first_landfall_gate"]
+    conventional = gates["strict_first_landfall_criterion"]
     registered_text = "通过" if registered["passed"] else "未通过"
     conventional_text = "通过" if conventional["passed"] else "未通过"
-    text = f"""# 机构原生TS阶段登陆复核：结论影响
+    text = f"""# 机构原生TS阶段登陆分析：结果摘要
 
-## 复核对象
+## 分析对象
 
-本分析不重新寻找交点，而是读取当前正式版 `{RELEASE_TAG}` 的6489个精确海岸线交点及其互斥岸段归属，再按USA、JMA和CMA各自原生强度状态判断交点是否发生在热带风暴及以上阶段。主口径为“交点前一个机构原生时次已达到TS”；“任一端为TS”和“两端均为TS”作为阶段判定敏感性。连续登陆纬度保留“其他”岸段，因为纬度指标不依赖命名海岸分类；留一海岸检验统一使用 `coast_exclusive`。
+本分析不重新寻找交点，而是读取6489个精确海岸线交点及其互斥岸段归属，再按USA、JMA和CMA各自原生强度状态判断交点是否发生在热带风暴及以上阶段。主口径为“交点前一个机构原生时次已达到TS”；“任一端为TS”和“两端均为TS”作为阶段判定敏感性。连续登陆纬度保留“其他”岸段，因为纬度指标不依赖命名海岸分类；留一海岸检验统一使用 `coast_exclusive`。
 
 ## 事件保留量
 
@@ -772,27 +771,26 @@ def write_impact_report(
 
 三种TS阶段判定下，三机构、两种登陆定义的时期差方向全部为正：`{all_stage_directions_positive}`。首次登陆的效应范围为{first_range['min']:.3f}°—{first_range['max']:.3f}°，全部事件为{all_range['min']:.3f}°—{all_range['max']:.3f}°。
 
-## 标题门禁
+## 标题判据
 
-- 原登记规则A重算：**{registered_text}**。方向、2025年端点、1982年起趋势、互斥岸段留一检验及“任一登陆定义达到显著”的机构数均按修正后的主口径重算。
-- 更严格的首次登陆门禁：**{conventional_text}**。该诊断只使用首次登陆，并要求至少2个机构在三机构BH-FDR后显著；它是审稿视角下更保守的备选门禁，不在本轮擅自替换项目既定规则。
-- 本轮不修改论文题名或正文。是否据更严格门禁调整题名，留待作者决定。
+- 规则A：**{registered_text}**。方向、2025年端点、1982年起趋势、互斥岸段留一检验及“任一登陆定义达到显著”的机构数均按主口径计算。
+- 更严格的首次登陆标准：**{conventional_text}**。该标准只使用首次登陆，并要求至少2个机构在三机构BH-FDR后显著。
 
-## 对现有结论的边界
+## 解释边界
 
 - 路径场空间重分配和起源纬度分解不使用本次登陆阶段筛选，结论不受影响。
 - 直接登陆纬度的方向、幅度和统计支持以本表为准；与全生命周期口径的差异见 `results/period_statistics.csv` 和诊断图。
-- 海岸份额结果仍需另行决定是否也按TS阶段重算；本轮只修复直接登陆纬度及标题证据门禁，没有把阶段筛选自动外推到论文其他分析。
-- 该结果是观测定义修复，不构成动力因果归因。
+- 阶段筛选仅用于直接登陆纬度，不外推到海岸份额或其他分析。
+- 该结果取决于观测定义，不构成动力因果归因。
 
 ## 质量控制
 
-- 互斥岸段权威表与活动精确交点键集合一致：`{checks['event_key_sets_equal']}`。
-- 全生命周期回算与活动结果的效应量、区间和p值逐项一致：`{all(checks['full_lifecycle_numeric_match'].values())}`。
+- 互斥岸段表与精确交点键集合一致：`{checks['event_key_sets_equal']}`。
+- 全生命周期回算与基准结果的效应量、区间和p值逐项一致：`{all(checks['full_lifecycle_numeric_match'].values())}`。
 - 原生状态端点缺失数：`{checks['endpoint_state_missing']}`。
-- 总门禁：`{'PASS' if checks['passed'] else 'FAIL'}`。
+- 全部质量标准：`{'PASS' if checks['passed'] else 'FAIL'}`。
 """
-    (VERIFY / "CONCLUSION_IMPACT.md").write_text(text, encoding="utf-8")
+    (VERIFY / "RESULTS_SUMMARY.md").write_text(text, encoding="utf-8")
 
 
 def main() -> None:
@@ -819,7 +817,7 @@ def main() -> None:
         RESULTS / "leave_one_exclusive_coast.csv", index=False
     )
     gates = title_gates(period, trends, leave_one)
-    write_json(RESULTS / "title_gates.json", gates)
+    write_json(RESULTS / "title_criteria.json", gates)
 
     checks = validate_against_active(events, period)
     write_json(QA / "validation_checks.json", checks)
@@ -841,7 +839,7 @@ def main() -> None:
     write_json(
         QA / "run_summary.json",
         {
-            "release_authority": RELEASE_TAG,
+            "analysis_source_version": RELEASE_TAG,
             "primary_stage_rule": PRIMARY_STAGE_RULE,
             "stage_rules": list(STAGE_RULES),
             "definitions": list(DEFINITIONS),

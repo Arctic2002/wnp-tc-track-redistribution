@@ -17,7 +17,7 @@ from common import (
     project_path,
     require_execute,
     resolve_config_path,
-    validate_code_review_gate,
+    validate_method_record,
     write_json,
 )
 
@@ -81,7 +81,7 @@ def main() -> None:
     require_execute(args.execute)
     config_path = resolve_config_path(args.config)
     config = load_config(config_path)
-    validate_code_review_gate(config_path, config)
+    validate_method_record(config_path, config)
     ohc = config["ohc"]
     audit = config["seam_audit"]
     prepared = project_path(ohc["prepared_dir"])
@@ -168,7 +168,7 @@ def main() -> None:
     pd.DataFrame(rows).to_csv(temp_csv, index=False)
     atomic_replace(temp_csv, output_csv)
     payload = {
-        "status": "FAIL_STRUCTURAL" if structural_errors else "REVIEW_REQUIRED",
+        "status": "FAIL_STRUCTURAL" if structural_errors else "STRUCTURAL_CHECKS_PASSED",
         "structural_errors": structural_errors,
         "coordinate_tolerance_degrees": coordinate_atol,
         "coordinate_differences_vs_first_year": coordinate_differences,

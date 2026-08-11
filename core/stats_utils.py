@@ -96,7 +96,7 @@ def ridge_std(X, y):
     dat = pd.concat([X, pd.Series(y, name="__y")], axis=1).dropna()
     Xs = (dat[X.columns] - dat[X.columns].mean()) / dat[X.columns].std()
     ys = (dat["__y"] - dat["__y"].mean()) / dat["__y"].std()
-    # TimeSeriesSplit 始终用较早资料训练、较晚资料验证，避免未来信息泄漏。
+    # TimeSeriesSplit 始终用较早资料训练、较晚资料验证，避免后期信息泄漏。
     cv = TimeSeriesSplit(n_splits=min(5, max(2, len(dat) // 8)))
     m = RidgeCV(alphas=np.logspace(-3, 3, 50), cv=cv).fit(Xs, ys)
     return pd.Series(m.coef_, index=X.columns), m.alpha_

@@ -8,4 +8,4 @@
 - 一致性：机构间前后期差值图Pearson相关。
 - 随机种子：202406。中间年度构成保存为压缩NPZ，供共同样本和切点敏感性复用。
 
-复算与冻结输出逐字段比较见`comparison_with_frozen.csv`。`match=true`要求绝对误差不超过1e-12或相对误差不超过1e-10。
+复算与参照输出逐字段比较见`comparison_with_frozen.csv`。`match=true`要求绝对误差不超过1e-12或相对误差不超过1e-10。

@@ -71,7 +71,7 @@ def test_smoke_pi_sampling_if_paper1_present():
     try:
         from paper1_thermo.collocate_env import sample_points  # noqa
     except Exception:
-        pytest.skip("paper1_thermo 尚未实现（当前仅构建 Core 层），跳过 PI 采样冒烟")
+        pytest.skip("paper1_thermo 不属于本分析包的 Core 层测试范围，跳过 PI 采样冒烟")
 
     import xarray as xr
     with tempfile.TemporaryDirectory() as d:

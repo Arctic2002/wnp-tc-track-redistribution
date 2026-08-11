@@ -1,4 +1,4 @@
-"""Synthetic known-answer tests; not executed before third-party review."""
+"""Synthetic known-answer tests for the exposure decomposition."""
 
 from __future__ import annotations
 

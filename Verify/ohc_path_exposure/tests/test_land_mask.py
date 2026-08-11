@@ -1,4 +1,4 @@
-"""Synthetic GSHHG-raster lookup tests; not yet executed."""
+"""Synthetic GSHHG-raster lookup tests."""
 
 from __future__ import annotations
 

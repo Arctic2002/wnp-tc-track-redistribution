@@ -44,26 +44,26 @@ def sha256_file(path: Path, chunk_size: int = 1024 * 1024) -> str:
     return digest.hexdigest()
 
 
-def review_bundle_files(config_path: Path) -> list[Path]:
+def validation_bundle_files(config_path: Path) -> list[Path]:
     files = [
         Path(config_path).resolve(),
         PACKAGE_ROOT / "README.md",
         PACKAGE_ROOT / "requirements.txt",
         PACKAGE_ROOT / "docs" / "METHOD_SPEC.md",
         PACKAGE_ROOT / "docs" / "OUTPUT_SCHEMA.md",
-        PACKAGE_ROOT / "docs" / "THIRD_PARTY_REVIEW.md",
+        PACKAGE_ROOT / "docs" / "INDEPENDENT_VALIDATION.md",
     ]
     files.extend(sorted((PACKAGE_ROOT / "src").glob("*.py")))
     files.extend(sorted((PACKAGE_ROOT / "tests").glob("test_*.py")))
     missing = [path for path in files if not path.is_file()]
     if missing:
-        raise FileNotFoundError(f"review bundle is incomplete: {missing}")
+        raise FileNotFoundError(f"validation bundle is incomplete: {missing}")
     return sorted(set(path.resolve() for path in files), key=lambda path: str(path).lower())
 
 
-def review_bundle_sha256(config_path: Path) -> str:
+def validation_bundle_sha256(config_path: Path) -> str:
     digest = hashlib.sha256()
-    for path in review_bundle_files(config_path):
+    for path in validation_bundle_files(config_path):
         relative = path.relative_to(PROJECT_ROOT).as_posix().encode("utf-8")
         payload = path.read_bytes()
         digest.update(len(relative).to_bytes(8, "big"))
@@ -101,42 +101,42 @@ def require_execute(enabled: bool) -> None:
         )
 
 
-def validate_code_review_gate(config_path: Path, config: dict) -> dict:
-    approval_path = project_path(config["pipeline"]["approval_file"])
-    if not approval_path.is_file():
+def validate_method_record(config_path: Path, config: dict) -> dict:
+    validation_path = project_path(config["pipeline"]["method_validation_file"])
+    if not validation_path.is_file():
         raise PermissionError(
-            f"third-party review approval is absent: {approval_path}; do not copy the example unchanged"
+            f"method-validation record is absent: {validation_path}"
         )
-    with approval_path.open("r", encoding="utf-8") as handle:
-        approval = json.load(handle)
-    if approval.get("status") != "approved" or int(approval.get("open_blocking_items", -1)) != 0:
-        raise PermissionError("third-party review has not approved execution")
-    if approval.get("config_sha256") != sha256_file(config_path):
-        raise PermissionError("approval config_sha256 does not match the current config.json")
-    if approval.get("review_bundle_sha256") != review_bundle_sha256(config_path):
-        raise PermissionError("approval review_bundle_sha256 does not match the reviewed code bundle")
-    return approval
+    with validation_path.open("r", encoding="utf-8") as handle:
+        validation = json.load(handle)
+    if validation.get("status") != "validated" or int(validation.get("open_blocking_items", -1)) != 0:
+        raise PermissionError("method-validation record is not approved")
+    if validation.get("config_sha256") != sha256_file(config_path):
+        raise PermissionError("validation config_sha256 does not match config.json")
+    if validation.get("validation_bundle_sha256") != validation_bundle_sha256(config_path):
+        raise PermissionError("validation bundle hash does not match the code and method bundle")
+    return validation
 
 
-def validate_seam_review_gate(config_path: Path, config: dict) -> dict:
-    review_path = project_path(config["pipeline"]["seam_review_file"])
+def validate_product_seam_decision(config_path: Path, config: dict) -> dict:
+    decision_path = project_path(config["pipeline"]["product_seam_decision_file"])
     audit_path = project_path(config["seam_audit"]["output_json"])
-    if not review_path.is_file():
-        raise PermissionError(f"manual product-seam review is absent: {review_path}")
+    if not decision_path.is_file():
+        raise PermissionError(f"product-seam decision record is absent: {decision_path}")
     if not audit_path.is_file():
         raise FileNotFoundError(f"product-seam audit output is absent: {audit_path}")
-    with review_path.open("r", encoding="utf-8") as handle:
-        review = json.load(handle)
-    if review.get("status") != "reviewed" or review.get("decision") not in {
+    with decision_path.open("r", encoding="utf-8") as handle:
+        decision = json.load(handle)
+    if decision.get("status") != "accepted" or decision.get("decision") not in {
         "accept",
         "accept_with_limitations",
     }:
-        raise PermissionError("product seam has not received an acceptable manual decision")
-    if review.get("config_sha256") != sha256_file(config_path):
-        raise PermissionError("seam review config_sha256 does not match the current config.json")
-    if review.get("seam_audit_sha256") != sha256_file(audit_path):
-        raise PermissionError("seam review is not bound to the current seam-audit output")
-    return review
+        raise PermissionError("product-seam decision is not acceptable")
+    if decision.get("config_sha256") != sha256_file(config_path):
+        raise PermissionError("product-seam decision config hash does not match config.json")
+    if decision.get("seam_audit_sha256") != sha256_file(audit_path):
+        raise PermissionError("product-seam decision is not bound to the seam diagnostic output")
+    return decision
 
 
 def ensure_output_target(path: Path, *, overwrite: bool) -> None:

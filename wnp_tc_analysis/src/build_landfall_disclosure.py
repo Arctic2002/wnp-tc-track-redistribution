@@ -248,7 +248,7 @@ def update_trace(trace_path: Path, new_rows: list[dict[str, str]]) -> int:
     status["trace_claim_count"] = len(rows)
     status["disclosure_claims"] = ["LF15", "LF16", "LF17"]
     status["disclosure_rule"] = (
-        "New disclosure values are computed from release-local annual and "
+        "Disclosure values are computed from the annual and "
         "leave-one-coast CSV files; no figure is used as a numerical source."
     )
     status_path.write_text(

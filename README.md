@@ -1,8 +1,8 @@
 # Post-Genesis Track Redistribution in the Western North Pacific
 
-This repository provides the analysis and figure-generation code used in:
+This repository provides the analysis and figure-generation code for the companion manuscript:
 
-> Huang, D., and Y. Yue. *Post-Genesis Track Redistribution and Poleward Landfall-Latitude Shift in the Western North Pacific: Cross-Agency Evidence from 1966–2025.* Manuscript prepared for submission to *Journal of Geophysical Research: Oceans*.
+> Huang, D., and Y. Yue. *Post-Genesis Track Redistribution and Poleward Landfall-Latitude Shift in the Western North Pacific: Cross-Agency Evidence from 1966–2025.*
 
 The associated derived data and regional monthly ORAS5 OHC300 subset are archived on Zenodo at [10.5281/zenodo.21879380](https://doi.org/10.5281/zenodo.21879380).
 
@@ -20,7 +20,7 @@ Original third-party datasets remain available from their providers. Redistribut
 
 ## Environment
 
-The recorded analysis environment uses Python 3.12 with the fixed random seed `202406`. Create the environment with:
+The analysis environment uses Python 3.12 with the fixed random seed `202406`. Create the environment with:
 
 ```bash
 conda env create -f config/environment.yml

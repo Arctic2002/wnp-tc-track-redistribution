@@ -17,7 +17,7 @@ from common import (
     project_path,
     require_execute,
     resolve_config_path,
-    validate_code_review_gate,
+    validate_method_record,
 )
 from land_mask import build_land_mask, classify_points
 
@@ -130,7 +130,7 @@ def main() -> None:
     require_execute(args.execute)
     config_path = resolve_config_path(args.config)
     config = load_config(config_path)
-    validate_code_review_gate(config_path, config)
+    validate_method_record(config_path, config)
     match_cfg = config["matching"]
     ohc_cfg = config["ohc"]
     track_path = project_path(config["tracks"]["output_csv"])

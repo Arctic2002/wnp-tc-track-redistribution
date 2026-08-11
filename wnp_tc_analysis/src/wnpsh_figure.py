@@ -60,7 +60,7 @@ def make_figure(output: Path | None = None) -> None:
     handles, labels = axes.flat[0].get_legend_handles_labels()
     fig.legend(handles, labels, loc="lower center", bbox_to_anchor=(0.5, -0.05), ncol=3, frameon=False)
     # S9 is read at reduced supplementary-figure scale; apply one additional
-    # modest step beyond the release-wide typography scale.
+    # modest step beyond the shared typography scale.
     scale_figure_typography(fig, scale=1.30)
     output.parent.mkdir(parents=True, exist_ok=True)
     for suffix in ("png", "pdf"):

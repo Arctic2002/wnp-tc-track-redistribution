@@ -34,7 +34,7 @@ TH = cfg["oni_threshold"]
 
 
 def _figure_title(fig, title, *, tight=False, top=0.90):
-    """添加整图标题，并为标题预留顶部空间。"""
+    """添加整图标题，并设置标题所需的顶部空间。"""
     if tight:
         fig.tight_layout(rect=(0, 0, 1, 0.94))
     else:

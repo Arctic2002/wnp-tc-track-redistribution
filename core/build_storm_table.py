@@ -17,7 +17,7 @@ def main():
 
     # low_memory=False 让 pandas 先完整判断列类型，减少分块推断产生的混合类型警告。
     df = pd.read_csv(f"{cfg['paths']['raw']}/ibtracs_wp.csv", low_memory=False)
-    # 只取后续真正需要的列，并统一为小写项目字段名。
+    # 只取下游分析需要的列，并统一为小写项目字段名。
     cols = ["SID", "SEASON", "NAME", "ISO_TIME", "LAT", "LON", "NATURE", wcol, pcol]
     df = df[cols].copy()
     df.columns = ["sid", "season", "name", "iso_time", "lat", "lon", "nature", "wind", "pres"]

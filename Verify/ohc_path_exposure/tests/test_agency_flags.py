@@ -1,4 +1,4 @@
-"""Synthetic IFLAG and native TS classification tests; not yet executed."""
+"""Synthetic IFLAG and native TS classification tests."""
 
 from __future__ import annotations
 

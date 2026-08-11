@@ -15,7 +15,7 @@ from common import (
     project_path,
     require_execute,
     resolve_config_path,
-    validate_code_review_gate,
+    validate_method_record,
 )
 
 
@@ -169,7 +169,7 @@ def main() -> None:
     require_execute(args.execute)
     config_path = resolve_config_path(args.config)
     config = load_config(config_path)
-    validate_code_review_gate(config_path, config)
+    validate_method_record(config_path, config)
     track_cfg = config["tracks"]
     start = int(track_cfg["start_year"])
     end = int(track_cfg["end_year"])

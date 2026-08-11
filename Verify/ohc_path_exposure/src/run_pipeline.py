@@ -1,4 +1,4 @@
-"""Review-gated orchestration for the isolated OHC exposure pipeline."""
+"""Orchestration for the OHC exposure analysis pipeline."""
 
 from __future__ import annotations
 
@@ -16,8 +16,8 @@ from common import (
     require_execute,
     resolve_config_path,
     sha256_file,
-    validate_code_review_gate,
-    validate_seam_review_gate,
+    validate_method_record,
+    validate_product_seam_decision,
 )
 
 
@@ -59,9 +59,9 @@ def main() -> None:
     require_execute(args.execute)
     config_path = resolve_config_path(args.config)
     config = load_config(config_path)
-    validate_code_review_gate(config_path, config)
+    validate_method_record(config_path, config)
     if args.phase == "analyze":
-        validate_seam_review_gate(config_path, config)
+        validate_product_seam_decision(config_path, config)
 
     stages = PREPARE_STAGES if args.phase == "prepare" else ANALYZE_STAGES
     for stage in stages:

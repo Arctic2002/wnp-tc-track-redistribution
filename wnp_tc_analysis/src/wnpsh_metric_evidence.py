@@ -73,11 +73,11 @@ def run():
         assoc.loc[idx, "q_bh_within_response"] = bh_fdr(assoc.loc[idx, "block_permutation_p"])
     assoc.to_csv(out / "wnpsh_metric_associations.csv", index=False)
 
-    method = """# WNPSH指标证据审计
+    method = """# WNPSH指标证据说明
 
 - 固定588 dagpm指标复用`data/processed/p2_wnpsh.csv`中的面积、强度、西伸脊点和脊线；它们只表示固定阈值几何量。
 - 现有`eddy_wnpsh_mean_m`由80°—180°E局地域内逐纬度去经向平均后的500 hPa高度，在110°—160°E、15°—35°N取均值。它可作为局地域背景场调整后的代理量，但不等同于He等人要求的全球0°—360°经度带状均值定义。
-- 本地ERA5文件最多覆盖80°—180°E，无法从现有输入严格重算He等人的全经度涡动位势高度。因此本轮不把该代理量更名为严格的He指标，也不据此声称副高动力增强。
+- 本地ERA5文件覆盖80°—180°E，不支持重算He等人的全经度涡动位势高度。该代理量因此保留原定义，不解释为严格的He指标或副高动力增强。
 - 对1966—2025和1982—2025分别计算Theil–Sen趋势、分块自助置信区间、Hamed–Rao MK及族内BH-FDR。
 - 与三机构路径重分配指数、精确首次登陆纬度和LMI纬度的年际关系同时报告原序列Pearson相关和线性去趋势相关；3年分块置换及按响应变量的BH-FDR均以去趋势序列为推断对象，避免共同长期趋势造成伪相关。
 """
