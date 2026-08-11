@@ -9,6 +9,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from matplotlib.lines import Line2D
 from matplotlib.ticker import FuncFormatter
 from wnp_tc_analysis.src.figure_typography import scale_figure_typography
 
@@ -18,6 +19,11 @@ LEGACY = WORK / "archive" / "previous_v2" / "legacy_generated"
 MAIN = LEGACY / "figures" / "Main"
 SUPP = LEGACY / "figures" / "Supplementary"
 DATA = WORK / "data"
+
+matplotlib.rcParams["font.family"] = "sans-serif"
+matplotlib.rcParams["font.sans-serif"] = ["Arial", "Helvetica", "DejaVu Sans"]
+matplotlib.rcParams["pdf.fonttype"] = 42
+matplotlib.rcParams["ps.fonttype"] = 42
 
 COLORS = {"PRIMARY": "#222222", "USA": "#4069A1", "TOKYO": "#7F9FC5", "CMA": "#C66D6D"}
 DISPLAY = {"PRIMARY": "Primary", "USA": "USA", "TOKYO": "JMA", "CMA": "CMA"}
@@ -34,11 +40,23 @@ def add_coast(ax, extent):
 
 def format_geo_axes(ax):
     """Use compact directional tick labels without redundant axis titles."""
+    def longitude_label(value, _):
+        if np.isclose(abs(value), 180.0):
+            return "180°"
+        if np.isclose(value, 0.0):
+            return "0°"
+        return f"{abs(value):g}°{'E' if value > 0 else 'W'}"
+
+    def latitude_label(value, _):
+        if np.isclose(value, 0.0):
+            return "0°"
+        return f"{abs(value):g}°{'N' if value > 0 else 'S'}"
+
     ax.xaxis.set_major_formatter(
-        FuncFormatter(lambda value, _: f"{value:g}°E")
+        FuncFormatter(longitude_label)
     )
     ax.yaxis.set_major_formatter(
-        FuncFormatter(lambda value, _: f"{value:g}°N")
+        FuncFormatter(latitude_label)
     )
     ax.set_xlabel("")
     ax.set_ylabel("")
@@ -140,11 +158,22 @@ def fig4():
         m = ax.pcolormesh(lon_edges, lat_edges, arr, cmap="RdBu_r", vmin=-vmax, vmax=vmax, shading="flat")
         add_coast(ax, (100, 0, 180, 40))
         format_geo_axes(ax)
+        ax.set_xticks([100, 120, 140, 160, 180])
+        ax.set_yticks([0, 10, 20, 30, 40])
     open_panel_axis(axes[0, 1], right=True)
     # Panel b is a map: retain a complete geographic frame while its y-axis
     # labels remain on the outer (right) side of the two-column layout.
     axes[0, 1].spines["top"].set_visible(True)
     axes[0, 1].spines["left"].set_visible(True)
+    # Panel a carries the complete geographic scale.  Panel b retains only a
+    # latitude-axis indication, while panel c shares panel a's longitude scale
+    # and keeps its own latitude values.
+    axes[0, 1].tick_params(
+        axis="y", left=False, labelleft=False, right=True, labelright=False
+    )
+    axes[0, 1].yaxis.tick_right()
+    axes[0, 1].set_ylabel("")
+    axes[1, 0].tick_params(axis="x", labelbottom=False)
     fig.colorbar(m, cax=cax, orientation="horizontal", label="Contribution to late minus early share (percentage points per cell)")
     ax = axes[1, 1]
     s = summary[summary.catalog.isin(["PRIMARY", "USA", "TOKYO", "CMA"])].set_index("catalog").loc[["PRIMARY", "USA", "TOKYO", "CMA"]]
@@ -159,6 +188,10 @@ def fig4():
     ax.legend(frameon=False, ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.16))
     for panel in axes.flat:
         panel.set_box_aspect(0.58)
+    for panel in axes.flat[:3]:
+        panel.set_adjustable("box")
+        panel.set_xlim(100, 180)
+        panel.set_ylim(0, 40)
     open_panel_axis(ax, right=True)
     fig.canvas.draw()
     cax_pos = cax.get_position()
@@ -192,10 +225,13 @@ def fig5():
         fig.add_subplot(gs[1, :]),
     ]
     cax = fig.add_subplot(gs[0, 0])
+    quiver = None
+    vector_scale = 18
+    vector_width = 0.0022
     for ax, scale in zip(axes[:2], ["raw", "detrended"]):
         m = ax.pcolormesh(lon, lat, fields[f"{scale}_z_eddy_beta"], cmap="RdBu_r", vmin=-vmax, vmax=vmax, shading="auto")
         step=2
-        ax.quiver(lon[::step], lat[::step], fields[f"{scale}_u_beta"][::step,::step], fields[f"{scale}_v_beta"][::step,::step], color="0.15", scale=18, width=0.0022)
+        quiver = ax.quiver(lon[::step], lat[::step], fields[f"{scale}_u_beta"][::step,::step], fields[f"{scale}_v_beta"][::step,::step], color="0.15", scale=vector_scale, width=vector_width)
         mask = fields[f"{scale}_u_q"] < 0.05
         yy, xx = np.where(mask)
         if len(xx): ax.scatter(lon[xx], lat[yy], s=3, color="black", alpha=0.45)
@@ -230,36 +266,149 @@ def fig5():
     y=np.arange(len(rows)); beta=np.array([r[1] for r in rows]); lo=beta-np.array([r[2] for r in rows]); hi=np.array([r[3] for r in rows])-beta
     axes[2].errorbar(beta, y, xerr=[lo,hi], fmt="o", color="#365E8D", ecolor="0.25", capsize=3)
     axes[2].axvline(0,color="0.45",lw=0.8); axes[2].set_yticks(y,[r[0] for r in rows]); axes[2].invert_yaxis(); axes[2].set_xlabel("Standardized coefficient (HAC 95% CI)")
-    for yi,r in enumerate(rows): axes[2].text(r[3]+0.02, yi, f"q={r[4]:.3f}", va="center", fontsize=8)
+    for yi,r in enumerate(rows): axes[2].text(r[3]+0.004, yi, f"q={r[4]:.3f}", va="center", fontsize=10)
     open_panel_axis(axes[2])
     panel_letters(axes); save(fig, "Fig05_circulation_context")
 
 
 def fig6():
-    events = pd.read_csv(DATA / "wnp_tc_landfall_unique_events.csv")
-    summary = pd.read_csv(DATA / "wnp_tc_landfall_unique_summary.csv")
-    fig = plt.figure(figsize=(12, 7.8), constrained_layout=True)
-    gs = fig.add_gridspec(2, 2)
-    axes=[fig.add_subplot(gs[0,:]), fig.add_subplot(gs[1,0]), fig.add_subplot(gs[1,1])]
-    s = summary[((summary.assignment_rule=="first_named") & summary.agency.isin(["PRIMARY","USA","TOKYO","CMA"])) | ((summary.agency=="PRIMARY") & (summary.assignment_rule=="strongest"))].copy()
-    s["label"] = s.agency + "\n" + s.assignment_rule.str.replace("_", " ")
-    x=np.arange(len(s)); bars=axes[0].bar(x,s.north_share_change_percentage_points,color="#7A9E7E")
-    axes[0].set_xticks(x,s.label); axes[0].set_ylabel("North-share change (percentage points)")
-    for bar,p in zip(bars,s.north_share_block_p): axes[0].text(bar.get_x()+bar.get_width()/2,bar.get_height()+0.15,f"p={p:.3f}",ha="center",fontsize=8)
-    d=events[(events.agency=="PRIMARY")&(events.assignment_rule=="first_named")]
-    coasts=["China_E","China_S","Japan","Korea","Other","Philippines","Taiwan","Vietnam"]
-    arr=[]
-    for period,a,b in [("1966–1995",1966,1995),("1996–2025",1996,2025)]:
-        c=d[d.season.between(a,b)].coast.value_counts().reindex(coasts,fill_value=0); c=c/c.sum()*100
-        arr.append(c)
-    xx=np.arange(len(coasts)); w=.38
-    axes[1].bar(xx-w/2,arr[0],w,label="1966–1995",color="#4C72B0"); axes[1].bar(xx+w/2,arr[1],w,label="1996–2025",color="#86A5CC")
-    axes[1].set_xticks(xx,[x.replace("China_E","East China").replace("China_S","South China") for x in coasts],rotation=30,ha="right"); axes[1].set_ylabel("Share of uniquely assigned storms (%)"); axes[1].legend(frameon=False)
-    s2=summary[summary.assignment_rule.isin(["first_any","first_named","strongest"]) & (summary.agency=="PRIMARY")]
-    xx=np.arange(len(s2)); axes[2].bar(xx,s2.eight_category_tv,color="#B98563")
-    axes[2].set_xticks(xx,s2.assignment_rule.str.replace("_"," ")); axes[2].set_ylabel("Eight-category total-variation distance")
-    for i,p in enumerate(s2.eight_category_block_p): axes[2].text(i,s2.eight_category_tv.iloc[i]+0.003,f"p={p:.3f}",ha="center",fontsize=8)
-    panel_letters(axes); save(fig,"Fig06_landfall_unique_sensitivity")
+    direct = pd.read_csv(
+        WORK / "analysis" / "01_landfall_latitude" / "landfall_latitude_summary.csv"
+    )
+    direct = direct.loc[
+        direct["start"].eq(1966)
+        & direct["end"].eq(2025)
+        & direct["metric"].eq("mean_lat")
+    ]
+    common = pd.read_csv(
+        WORK / "analysis" / "03_common_storms" / "common_storm_landfall_summary.csv"
+    )
+    common = common.loc[common["metric"].eq("mean_landfall_latitude")]
+    cutpoint = pd.read_csv(
+        WORK / "analysis" / "02_cutpoint_sensitivity" / "cutpoint_sensitivity.csv"
+    )
+    cutpoint = cutpoint.loc[
+        cutpoint["scheme"].eq("full_record")
+        & cutpoint["metric"].eq("first_landfall_latitude_difference")
+    ]
+    coast = pd.read_csv(
+        WORK / "analysis" / "06_landfall_grouping" / "coast_grouping_sensitivity.csv"
+    )
+    coast = coast.loc[
+        coast["threshold_km"].eq(50.0)
+        & coast["taiwan_rule"].eq("taiwan_north")
+        & coast["denominator"].eq("named_only")
+        & coast["event_rule"].isin(["all_events", "first_any", "first_named"])
+    ]
+
+    agencies = ["USA", "TOKYO", "CMA"]
+    agency_colors = {"USA": "#4C72B0", "TOKYO": "#7E9CC4", "CMA": "#C76D6D"}
+    agency_labels = {"USA": "USA", "TOKYO": "JMA", "CMA": "CMA"}
+    fig, axes = plt.subplots(2, 2, figsize=(11, 7.4), constrained_layout=True)
+    offsets = {"all_events": -0.13, "first_landfall": 0.13}
+
+    for definition, marker, label in [
+        ("all_events", "o", "All events"),
+        ("first_landfall", "s", "First landfall"),
+    ]:
+        part = direct.loc[direct["definition"].eq(definition)].set_index("agency").loc[agencies]
+        x = np.arange(3) + offsets[definition]
+        effect = part["period_difference"].to_numpy()
+        low = part["period_ci_low"].to_numpy()
+        high = part["period_ci_high"].to_numpy()
+        axes[0, 0].errorbar(
+            x, effect, yerr=[effect - low, high - effect], fmt=marker,
+            ms=5, capsize=3, color="0.25", label=label,
+        )
+    axes[0, 0].axhline(0, color="0.5", lw=0.8)
+    axes[0, 0].set(
+        xticks=np.arange(3), xticklabels=["USA", "JMA", "CMA"],
+        ylabel="Latitude change (°)",
+    )
+    axes[0, 0].legend(frameon=False, loc="lower right")
+
+    for definition, marker, label in [
+        ("all_events", "o", "All events"),
+        ("first_landfall", "s", "First landfall"),
+    ]:
+        part = common.loc[common["definition"].eq(definition)].set_index("agency").loc[agencies]
+        x = np.arange(3) + offsets[definition]
+        effect = part["late_minus_early"].to_numpy()
+        low = part["ci_low"].to_numpy()
+        high = part["ci_high"].to_numpy()
+        axes[0, 1].errorbar(
+            x, effect, yerr=[effect - low, high - effect], fmt=marker,
+            ms=5, capsize=3, color="0.25", label=label,
+        )
+    axes[0, 1].axhline(0, color="0.5", lw=0.8)
+    axes[0, 1].set(
+        xticks=np.arange(3), xticklabels=["USA", "JMA", "CMA"],
+        ylabel="Common-storm latitude change (°)",
+    )
+    axes[0, 1].legend(frameon=False, loc="lower right")
+
+    rules = ["all_events", "first_any", "first_named"]
+    rule_labels = ["All events", "First any coast", "First named coast"]
+    for agency in agencies:
+        part = coast.loc[coast["agency"].eq(agency)].set_index("event_rule").loc[rules]
+        axes[1, 0].plot(
+            np.arange(len(rules)), part["change_percentage_points"], marker="o",
+            color=agency_colors[agency], label=agency_labels[agency],
+        )
+    axes[1, 0].axhline(0, color="0.5", lw=0.8)
+    axes[1, 0].set(
+        xticks=np.arange(len(rules)), xticklabels=rule_labels,
+        ylabel="North-share change (percentage points)",
+    )
+    axes[1, 0].tick_params(axis="x", rotation=12)
+    axes[1, 0].legend(frameon=False, ncol=3)
+
+    for agency in agencies:
+        part = cutpoint.loc[cutpoint["agency"].eq(agency)].sort_values("cutpoint")
+        axes[1, 1].plot(
+            part["cutpoint"], part["effect"], color=agency_colors[agency],
+            lw=1.1, label=agency_labels[agency],
+        )
+        significant = part["p_value"].lt(0.05)
+        axes[1, 1].scatter(
+            part.loc[significant, "cutpoint"], part.loc[significant, "effect"],
+            s=26, facecolors=agency_colors[agency], edgecolors=agency_colors[agency],
+            linewidths=0.9, zorder=3,
+        )
+        axes[1, 1].scatter(
+            part.loc[~significant, "cutpoint"], part.loc[~significant, "effect"],
+            s=26, facecolors="white", edgecolors=agency_colors[agency],
+            linewidths=1.0, zorder=3,
+        )
+    axes[1, 1].axvline(1996, color="0.4", ls="--", lw=0.9)
+    axes[1, 1].axhline(0, color="0.5", lw=0.8)
+    axes[1, 1].set(
+        xlabel="First year of late period",
+        ylabel="First-landfall latitude change (°)",
+    )
+    status_handles = [
+        Line2D([0], [0], marker="o", linestyle="none", markerfacecolor="0.3",
+               markeredgecolor="0.3", markersize=5, label="p < 0.05"),
+        Line2D([0], [0], marker="o", linestyle="none", markerfacecolor="white",
+               markeredgecolor="0.3", markersize=5, label="p ≥ 0.05"),
+    ]
+    agency_handles = [
+        Line2D([0], [0], color=agency_colors[a], lw=1.2, label=agency_labels[a])
+        for a in agencies
+    ]
+    axes[1, 1].legend(handles=agency_handles + status_handles, frameon=False, ncol=2)
+
+    for row in axes:
+        for column, ax in enumerate(row):
+            ax.spines["top"].set_visible(False)
+            if column == 0:
+                ax.spines["right"].set_visible(False)
+            else:
+                ax.spines["left"].set_visible(False)
+                ax.yaxis.set_label_position("right")
+                ax.yaxis.tick_right()
+    panel_letters(axes)
+    save(fig, "Fig06_landfall_latitude_and_grouping_v2", scale=1.27)
 
 
 def copy_existing():
@@ -290,12 +439,12 @@ def main():
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", type=Path)
-    parser.add_argument("--figures", nargs="*", choices=["3", "4", "5"])
+    parser.add_argument("--figures", nargs="*", choices=["3", "4", "5", "6"])
     args = parser.parse_args()
     if args.output_dir is not None:
         MAIN = args.output_dir
         MAIN.mkdir(parents=True, exist_ok=True)
-    selected = args.figures or ["3", "4", "5"]
-    for number, func in {"3": fig3, "4": fig4, "5": fig5}.items():
+    selected = args.figures or ["3", "4", "5", "6"]
+    for number, func in {"3": fig3, "4": fig4, "5": fig5, "6": fig6}.items():
         if number in selected:
             func()

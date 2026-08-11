@@ -4,7 +4,7 @@ This repository provides the analysis and figure-generation code for the compani
 
 > Huang, D., and Y. Yue. *Post-Genesis Track Redistribution and Poleward Landfall-Latitude Shift in the Western North Pacific: Cross-Agency Evidence from 1966–2025.*
 
-The associated derived data and regional monthly ORAS5 OHC300 subset are archived on Zenodo at [10.5281/zenodo.21879380](https://doi.org/10.5281/zenodo.21879380).
+The associated derived data and regional monthly ORAS5 OHC300 subset are archived on Zenodo at [10.5281/zenodo.21886778](https://doi.org/10.5281/zenodo.21886778).
 
 ## Repository contents
 
@@ -42,6 +42,6 @@ The analysis uses IBTrACS v04r01, ERA5, ORAS5, ONI, PDO, and GSHHG. Source locat
 
 ## Citation and license
 
-Please use `CITATION.cff` when citing the software and associated data package. Its DOI is [10.5281/zenodo.21879380](https://doi.org/10.5281/zenodo.21879380).
+Please use `CITATION.cff` when citing the software and associated data package. Its DOI is [10.5281/zenodo.21886778](https://doi.org/10.5281/zenodo.21886778).
 
 The project code is licensed under the MIT License. External datasets retain their providers' terms.
