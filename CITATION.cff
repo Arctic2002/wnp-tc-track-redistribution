@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite the versioned archive and the associated article."
 title: "Analysis code for post-genesis tropical-cyclone track redistribution in the western North Pacific"
-version: "1.2.0"
-date-released: "2026-08-19"
+version: "1.1.0"
+date-released: "2026-08-11"
 license: MIT
 type: software
 repository-code: "https://github.com/Arctic2002/wnp-tc-track-redistribution"
-doi: "10.5281/zenodo.22011203"
+doi: "10.5281/zenodo.21886778"
 authors:
   - family-names: Huang
     given-names: Daizhao
