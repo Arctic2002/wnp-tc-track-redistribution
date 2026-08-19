@@ -1,4 +1,4 @@
-"""Publication rendering for the primary-record activity diagnostic (S1)."""
+"""Publication rendering for the primary-record activity diagnostic (S4)."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ PROJECT = Path(__file__).resolve().parents[2]
 
 
 def make_figure(output: Path) -> None:
-    """Render S1 with the saved Mann–Kendall p and BH-FDR q values visible."""
+    """Render S4 with the saved Mann–Kendall p and BH-FDR q values visible."""
     annual = pd.read_csv(PROJECT / "data" / "processed" / "p1_annual.csv")
     trends = pd.read_csv(PROJECT / "data" / "processed" / "p1_trends.csv")
     trends = trends.loc[trends.scope.eq("annual")].set_index("var")
