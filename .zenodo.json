@@ -1,0 +1,31 @@
+{
+  "title": "Analysis code and derived data for post-genesis tropical-cyclone track redistribution in the western North Pacific",
+  "upload_type": "software",
+  "description": "Analysis code, independent analyses, regional ORAS5 OHC300 subsets, derived tables, and figures for a 1966-2025 cross-agency study of western North Pacific tropical-cyclone track redistribution and landfall-latitude change.",
+  "creators": [
+    {
+      "name": "Huang, Daizhao",
+      "orcid": "0009-0009-6759-613X",
+      "affiliation": "Guangxi Laboratory on the Study of Coral Reefs in the South China Sea, School of Marine Sciences, Guangxi University"
+    },
+    {
+      "name": "Yue, Yuanfu",
+      "orcid": "0000-0002-5248-0056",
+      "affiliation": "Guangxi Laboratory on the Study of Coral Reefs in the South China Sea, School of Marine Sciences, Guangxi University"
+    }
+  ],
+  "access_right": "open",
+  "license": "mit",
+  "doi": "10.5281/zenodo.22011203",
+  "keywords": [
+    "tropical cyclone",
+    "western North Pacific",
+    "track redistribution",
+    "landfall latitude",
+    "IBTrACS",
+    "ERA5",
+    "ORAS5"
+  ],
+  "version": "1.2.0",
+  "publication_date": "2026-08-19"
+}
