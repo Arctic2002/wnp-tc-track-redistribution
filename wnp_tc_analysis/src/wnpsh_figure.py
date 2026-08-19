@@ -62,8 +62,8 @@ def _outer_frame(axes) -> None:
 
 
 def make_figure(output: Path | None = None) -> None:
-    """Render S8 from the frozen annual values and trend estimates."""
-    output = output or SUPPLEMENTARY_FIGURES / "FigS08_wnpsh_fixed_contour_metrics"
+    """Render S9 from the frozen annual values and trend estimates."""
+    output = output or SUPPLEMENTARY_FIGURES / "FigS09_wnpsh_fixed_contour_metrics"
     annual = pd.read_csv(WORK / "data" / "wnp_tc_eddy_wnpsh_annual.csv")
     trends = pd.read_csv(
         WORK / "analysis" / "07_wnpsh_dynamic_metric" / "wnpsh_metric_trends.csv"

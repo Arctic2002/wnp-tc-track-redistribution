@@ -94,7 +94,6 @@ def figure6(folder):
     cut = cut.query("scheme == 'full_record' and metric == 'first_landfall_latitude_difference'")
     fig, axes = plt.subplots(2, 2, figsize=(11, 7.4), constrained_layout=True)
     offsets = {"all_events": -.13, "first_landfall": .13}
-    top_legends = []
     for definition, marker in [("all_events", "o"), ("first_landfall", "s")]:
         part = direct.loc[direct["definition"].eq(definition)].set_index("agency").loc[["USA", "TOKYO", "CMA"]]
         x = np.arange(3) + offsets[definition]
@@ -103,7 +102,7 @@ def figure6(folder):
                             color="0.25", label="All events" if definition == "all_events" else "First landfall")
     axes[0, 0].axhline(0, color="0.5", lw=.8)
     axes[0, 0].set(xticks=np.arange(3), xticklabels=["USA", "JMA", "CMA"], ylabel="Latitude change (°)")
-    top_legends.append(axes[0, 0].legend(frameon=False, loc="lower right"))
+    axes[0, 0].legend(frameon=False, loc="lower right")
 
     offsets2 = {"all_events": -.13, "first_landfall": .13}
     for definition, marker in [("all_events", "o"), ("first_landfall", "s")]:
@@ -114,7 +113,7 @@ def figure6(folder):
                             color="0.25", label="All events" if definition == "all_events" else "First landfall")
     axes[0, 1].axhline(0, color="0.5", lw=.8)
     axes[0, 1].set(xticks=np.arange(3), xticklabels=["USA", "JMA", "CMA"], ylabel="Common-storm latitude change (°)")
-    top_legends.append(axes[0, 1].legend(frameon=False, loc="lower right"))
+    axes[0, 1].legend(frameon=False, loc="lower right")
 
     rules = ["all_events", "first_any", "first_named"]
     labels = ["All events", "First", "First named"]
@@ -137,15 +136,9 @@ def figure6(folder):
     axes[1, 1].axhline(0, color="0.5", lw=.8)
     axes[1, 1].set(xlabel="First year of late period", ylabel="First-landfall latitude change (°)")
     axes[1, 1].set_ylim(bottom=0.60)
-    fig.canvas.draw()
-    for ax, legend in zip(axes[0, :], top_legends):
-        axis_height_pt = ax.get_window_extent().height * 72.0 / fig.dpi
-        legend.set_bbox_to_anchor(
-            (1.0, 12.7 / axis_height_pt), transform=ax.transAxes
-        )
     open_panel_axes(axes)
     panel_labels(axes)
-    save(fig, folder, "Fig06_landfall_latitude_and_grouping", scale=1.27)
+    save(fig, folder, "Fig06_landfall_latitude_and_grouping_v2", scale=1.27)
 
 
 def figure_s3(folder):
@@ -214,7 +207,7 @@ def figure_s3(folder):
     save(
         fig,
         folder,
-        "FigS13_exclusive_coast_threshold_sensitivity",
+        "FigS03_exclusive_coast_threshold_sensitivity",
         scale=1.18,
     )
 
@@ -222,10 +215,10 @@ def figure_s3(folder):
 def publish_landfall_supplementary(folder):
     figure_s3(folder)
     sources = {
-        "FigS12_cutpoint_sensitivity": (
+        "FigS07_cutpoint_sensitivity_v2": (
             WORK / "analysis" / "02_cutpoint_sensitivity" / "cutpoint_sensitivity"
         ),
-        "FigS11_landfall_latitude_diagnostic": (
+        "FigS08_landfall_latitude_diagnostic_v2": (
             WORK
             / "analysis"
             / "01_landfall_latitude"
@@ -262,7 +255,7 @@ def supplementary(folder):
     axes[0].legend(frameon=False, ncol=3, loc="lower center", bbox_to_anchor=(0.5, 1.02))
     open_panel_axes(axes)
     panel_labels(axes)
-    save(fig, folder, "FigS06_path_definition_sensitivity", scale=1.22)
+    save(fig, folder, "FigS05_path_definition_sensitivity_v2", scale=1.22)
 
     climate = pd.read_csv(WORK / "analysis" / "05_climate_mode_adjustment" / "hellinger_period_effect_adjusted.csv")
     fig, axes = plt.subplots(1, 2, figsize=(8.5, 3.8), constrained_layout=True)
@@ -275,7 +268,7 @@ def supplementary(folder):
     axes[1].set_ylim(0, .055)
     open_panel_axes(axes)
     panel_labels(axes)
-    save(fig, folder, "FigS07_climate_mode_adjustment", scale=1.20)
+    save(fig, folder, "FigS06_climate_mode_adjustment_v2", scale=1.20)
 
 
 def run():
