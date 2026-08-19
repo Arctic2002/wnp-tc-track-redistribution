@@ -180,7 +180,7 @@ def fig4():
     x = np.arange(len(s)); width = 0.34
     g = s.genesis_projection_fraction*100; p = s.propagation_projection_fraction*100
     ax.bar(x-width/2, g, width, color="#4C78A8", label="Genesis distribution")
-    ax.bar(x+width/2, p, width, color="#E07B39", label="Conditional track field")
+    ax.bar(x+width/2, p, width, color="#E07B39", label="Post-genesis propagation")
     lo = p - s.propagation_projection_fraction_boot_lo*100; hi = s.propagation_projection_fraction_boot_hi*100 - p
     ax.errorbar(x+width/2, p, yerr=[lo, hi], fmt="none", ecolor="0.25", capsize=3, lw=0.9)
     ax.set_xticks(x, [DISPLAY[name] for name in s.index]); ax.set_ylabel("Projection contribution (%)"); ax.set_ylim(0, 105)
@@ -198,7 +198,7 @@ def fig4():
     cax.set_position(
         [cax_pos.x0, cax_pos.y0 - 0.004, cax_pos.width, cax_pos.height]
     )
-    panel_letters(axes); save(fig, "Fig04_genesis_conditional_track_field_decomposition")
+    panel_letters(axes); save(fig, "Fig04_genesis_propagation_decomposition")
 
 
 def fig5():
@@ -307,7 +307,6 @@ def fig6():
     fig, axes = plt.subplots(2, 2, figsize=(11, 7.4), constrained_layout=True)
     offsets = {"all_events": -0.13, "first_landfall": 0.13}
 
-    top_legends = []
     for definition, marker, label in [
         ("all_events", "o", "All events"),
         ("first_landfall", "s", "First landfall"),
@@ -326,7 +325,7 @@ def fig6():
         xticks=np.arange(3), xticklabels=["USA", "JMA", "CMA"],
         ylabel="Latitude change (°)",
     )
-    top_legends.append(axes[0, 0].legend(frameon=False, loc="lower right"))
+    axes[0, 0].legend(frameon=False, loc="lower right")
 
     for definition, marker, label in [
         ("all_events", "o", "All events"),
@@ -346,7 +345,7 @@ def fig6():
         xticks=np.arange(3), xticklabels=["USA", "JMA", "CMA"],
         ylabel="Common-storm latitude change (°)",
     )
-    top_legends.append(axes[0, 1].legend(frameon=False, loc="lower right"))
+    axes[0, 1].legend(frameon=False, loc="lower right")
 
     rules = ["all_events", "first_any", "first_named"]
     rule_labels = ["All events", "First any coast", "First named coast"]
@@ -408,16 +407,8 @@ def fig6():
                 ax.spines["left"].set_visible(False)
                 ax.yaxis.set_label_position("right")
                 ax.yaxis.tick_right()
-    # Move the two top-panel legends upward by exactly one 12.7-pt legend
-    # character height.  This preserves every data artist and all typography.
-    fig.canvas.draw()
-    for ax, legend in zip(axes[0, :], top_legends):
-        axis_height_pt = ax.get_window_extent().height * 72.0 / fig.dpi
-        legend.set_bbox_to_anchor(
-            (1.0, 12.7 / axis_height_pt), transform=ax.transAxes
-        )
     panel_letters(axes)
-    save(fig, "Fig06_landfall_latitude_and_grouping", scale=1.27)
+    save(fig, "Fig06_landfall_latitude_and_grouping_v2", scale=1.27)
 
 
 def copy_existing():
